@@ -1,0 +1,103 @@
+{
+  "resource_name": "无尽冬日",
+  "resource_version": "v0.0.1",
+  "resource_author": "一念心清净",
+  "resource_update_service_id": "MaaWJDR",
+  "resource_rep_url": "https://github.com/l0rraine/MaaWJDR",
+  "resource_description": "无尽冬日自动化脚本",
+  "resource_icon": "/assets/logo/logo.png",
+  "agent": {
+    "type": "python",
+    "version": "3.11",
+    "agent_path": "./MaaAgent.py",
+    "agent_params": "-path ./agent",
+    "requirements_path": "./requirements.txt",
+    "use_venv": true
+  },
+  "resource_tasks": [
+    {
+      "task_name": "启动游戏",
+      "task_entry": "启动游戏",
+      "option": [
+        "王国内序号"
+       
+      ]
+    },
+    {
+      "task_name": "自动集结",
+      "task_entry": "集结冰原巨兽起点",
+      "option": [
+        "队伍设置",
+        "战斗设置",
+        "吉娜"
+      ]
+    }
+  ],
+  "options": [
+    {
+      "name": "王国编号",
+      "type": "input",
+      "default": "0",
+      "doc": "王国 ID",
+      "pipeline_override": {
+        "确定角色": {
+          "custom_action_param": {
+            "王国编号": "{value}"
+        }
+       }
+      }
+    },
+    {
+      "name": "王国内序号",
+      "type": "input",
+      "default": "0",
+      "doc": "在王国内是第几个角色",
+      "pipeline_override": {
+        "确定角色": {
+          "custom_action_param": {
+            "王国内序号": "{value}"
+          }
+        }
+      }
+    },
+    {
+      "name": "队伍设置",
+      "type": "input",
+      "default": "0",
+      "doc": "集结队伍设置,0不做修改，其余为队伍编组序号",
+      "pipeline_override": {
+        "选择队伍": {
+          "custom_action_param": {
+            "队伍序号": "{value}"
+          }
+        }
+      }
+    },
+    {
+      "name": "战斗设置",
+      "type": "input",
+      "default": "0",
+      "doc": "集结战斗方式,-1清空体力，0为智能保留，其他为具体次数",
+      "pipeline_override": {
+        "点击出征": {
+          "custom_action_param": {
+            "出征次数": "{value}"
+          }
+        }
+      }
+    },
+    {
+      "name": "吉娜",
+      "type": "boole",
+      "default": false,
+      "doc": "是否集结吉娜",
+      "pipeline_override": {
+        "点击出征": {
+          "custom_action_param": {
+            "怪兽种类": "{value}"
+          }
+        }
+      }
+    }
+  ]
+}

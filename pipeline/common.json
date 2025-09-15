@@ -1,0 +1,116 @@
+{
+    "关闭离线收益": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": "关闭离线收益.png",
+                "roi": [
+                    595,
+                    181,
+                    125,
+                    142
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    645,
+                    231,
+                    35,
+                    42
+                ]
+            }
+        },
+        "post_delay": 200
+    },
+    "关闭礼包":{
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": "./关闭礼包",
+                "roi": [
+                    422,
+                    4,
+                    297,
+                    447
+                ],
+                "green_mask": true
+            }
+        },
+        "action": "Click",
+        "post_delay": 200
+    },    
+    "后退": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": "后退.png",
+                "roi": [
+                    0,
+                    0,
+                    177,
+                    165
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    7,
+                    11,
+                    77,
+                    65
+                ]
+            }
+        },
+        "post_delay": 200
+    },
+    "转到城外": {
+        "recognition": "OCR",
+        "expected": [
+            "野外"
+        ],
+        "roi": [
+            566,
+            1188,
+            154,
+            92
+        ],
+        "action": "Click",
+        "post_wait_freezes": 2000
+    },
+    "队列不足": {
+        "recognition": "OCR",
+        "expected": "行军队列",
+        "roi": [
+            239,
+            267,
+            240,
+            143
+        ]       
+    },
+    "当前空余队列": {
+        "recognition": "OCR",
+        "expected": "行军队列",
+        "roi": [
+            239,
+            267,
+            240,
+            143
+        ]
+    },
+    "当前队列数量": {
+        "recognition": "OCR",
+        "expected": "^\\d/\\d$",
+        "roi": [
+            143,
+            146,
+            154,
+            137
+        ]
+    }
+
+}

@@ -1,0 +1,75 @@
+{
+    "灯塔入口": {
+        "next": [
+            "点击灯塔"
+        ],
+        "interrupt": [
+            "转到城外",
+            "后退",
+            "关闭礼包",
+            "关闭离线收益"
+        ]
+    },
+    "点击灯塔": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": [
+                    "灯塔.png"
+                ],
+                "roi": [
+                    584,
+                    783,
+                    136,
+                    163
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    634,
+                    833,
+                    63,
+                    63
+                ]
+            }
+        },
+        "post_delay": 500,
+        "next": [
+            "灯塔营救",
+            "灯塔野兽",
+            "灯塔战斗"
+        ]
+    },
+    "灯塔野兽": {},
+    "灯塔营救": {},
+    "灯塔战斗": {},
+    "灯塔返回": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": "灯塔返回.png",
+                "roi": [
+                    0,
+                    0,
+                    164,
+                    154
+                ]
+            }
+        },
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    12,
+                    12,
+                    64,
+                    54
+                ]
+            }
+        },
+        "post_delay": 500
+    }
+}

@@ -1,0 +1,221 @@
+{
+    "集结冰原巨兽起点": {      
+        "next": [
+            "点击放大镜"
+        ],
+        "interrupt": [
+            "后退",
+            "关闭礼包",
+            "关闭离线收益",
+            "转到城外"        
+        ]
+    },
+    "王国":{
+        "recognition":{
+            "type":"OCR",
+            "param":{
+                "roi": [
+                    56,
+                    213,
+                    609,
+                    585
+                ],
+                "expected": "王国：#3194"
+            }
+        }
+
+    },
+    "点击放大镜": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": "放大镜.png",
+                "roi": [
+                    4,
+                    836,
+                    82,
+                    258
+                ]
+            }
+        },
+        "action": "Click",
+        "next": [
+            "滑动到左边"
+        ]
+    },
+    "滑动到左边": {
+        "action": {
+            "type": "Swipe",
+            "param": {
+                "begin": [
+                    211,
+                    919,
+                    7,
+                    9
+                ],
+                "end": [
+                    510,
+                    917,
+                    25,
+                    12
+                ]
+            }
+        },
+        "next": [
+            "选择冰原巨兽"
+        ]
+    },
+    "选择冰原巨兽": {
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    225,
+                    898,
+                    29,
+                    23
+                ]
+            }
+        },
+        "next": [
+            "调整等级"
+        ]
+    },
+    "调整等级": {
+        "pre_delay": 500,
+        "action": "Custom",
+        "custom_action": "调整巨兽等级",
+        "custom_action_param": {
+            "巨兽等级": "0"
+        },
+        "next": [
+            "搜索"
+        ]
+    },
+    "搜索": {
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    328,
+                    1194,
+                    88,
+                    36
+                ]
+            }
+        },
+        "next": [
+            "点击集结"
+        ]
+    },
+    "点击集结": {
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    320,
+                    472,
+                    84,
+                    35
+                ]
+            }
+        },
+        "pre_delay": 1500,
+        "next": [
+            "发起集结"
+        ]
+    },
+    "发起集结": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    223,
+                    794,
+                    272,
+                    81
+                ],
+                "expected": "发起集结"
+            }
+        },
+        "action": "Click",
+        "next": [
+            "选择队伍"
+        ]
+    },
+    "选择队伍": {
+        "pre_delay": 200,
+        "action": "Custom",
+        "custom_action": "切换队伍",
+        "custom_action_param": {
+            "队伍序号": 0
+        },
+        "next": [
+            "准备出征"
+        ]
+    },
+    "准备出征": {
+        "action": "Custom",
+        "custom_action": "开始出征",
+        "custom_action_param": {
+            "出征次数": 0,
+            "怪兽种类": false
+        }
+    },
+    "点击出征": {
+        "action": {
+            "type": "Click",
+            "param": {
+                "target": [
+                    510,
+                    1185,
+                    91,
+                    51
+                ]
+            }
+        }
+    },
+    "集结中": {
+        "recognition": {
+            "type": "TemplateMatch",
+            "param": {
+                "template": "集结中.png",
+                "roi": [
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                "threshold": 0.9
+            }
+        }
+    },
+    "识别时间": {
+        "recognition": {
+            "type": "OCR",
+            "param":{
+                "roi": [
+                    422,
+                    1084,
+                    267,
+                    139
+                ],
+                "expected": "^\\d+:\\d+:\\d+$"
+            }
+        }
+    },
+    "行军中": {
+        "recognition": {
+            "type": "OCR",
+            "param": {
+                "roi": [
+                    354,
+                    354,
+                    89,
+                    41
+                ],
+                "expected": "^行军中[:：]$"
+            }
+        }
+    }
+}

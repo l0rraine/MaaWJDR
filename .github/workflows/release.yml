@@ -1,0 +1,49 @@
+name: 自动发版流程
+
+permissions:
+  contents: write
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 拉取项目代码
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 拉取完整历史
+          # 关键：避免标签冲突
+          ref: ${{ github.ref }}
+
+      # 使用更轻量的Changelog生成工具，避免复杂Git操作
+      - name: 生成Changelog
+        id: changelog
+        uses: metcalfc/changelog-generator@v4.0.1
+        with:
+          myToken: ${{ secrets.GITHUB_TOKEN }}
+          # 从标签提取版本号（v0.0.3 → 0.0.3）
+          tag: ${{ github.ref_name }}
+          # 只生成该标签对应的变更
+          releaseCount: 1
+
+      - name: 安装打包工具
+        run: sudo apt-get update && sudo apt-get install -y zip
+
+      - name: 打包项目
+        run: |
+          zip -r release-package.zip . -x '*.git*' '*.github*' 'node_modules/*'
+
+      - name: 创建Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body: ${{ steps.changelog.outputs.changelog }}
+          files: release-package.zip
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    

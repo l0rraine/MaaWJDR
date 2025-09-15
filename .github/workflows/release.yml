@@ -1,12 +1,12 @@
 name: 自动发版流程
 
 permissions:
-  contents: write
+  contents: write  # 确保有创建Release的权限
 
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - 'v*.*.*'  # 只在推送vX.Y.Z格式标签时触发
 
 jobs:
   build-and-release:
@@ -15,32 +15,57 @@ jobs:
       - name: 拉取项目代码
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # 拉取完整历史
-          # 关键：避免标签冲突
-          ref: ${{ github.ref }}
+          fetch-depth: 0  # 拉取完整历史记录
 
-      # 使用更轻量的Changelog生成工具，避免复杂Git操作
-      - name: 生成Changelog
-        id: changelog
-        uses: metcalfc/changelog-generator@v4.0.1
-        with:
-          myToken: ${{ secrets.GITHUB_TOKEN }}
-          # 从标签提取版本号（v0.0.3 → 0.0.3）
-          tag: ${{ github.ref_name }}
-          # 只生成该标签对应的变更
-          releaseCount: 1
+      # 步骤1：使用GitHub API获取当前标签与上一个标签之间的提交记录
+      - name: 生成简易Changelog
+        id: generate_changelog
+        run: |
+          # 获取当前标签名（如v0.0.3）
+          current_tag=${{ github.ref_name }}
+          
+          # 获取上一个标签（如果没有则取所有提交）
+          previous_tag=$(git describe --abbrev=0 --tags --exclude="$current_tag" 2>/dev/null || echo "")
+          
+          # 构造API请求的提交范围（上一个标签到当前标签）
+          if [ -n "$previous_tag" ]; then
+            commit_range="$previous_tag..$current_tag"
+          else
+            commit_range="$current_tag"  # 如果是第一个标签，取所有到当前标签的提交
+          fi
+          
+          # 获取提交记录并格式化为Changelog
+          changelog=$(git log --pretty=format:"- %s (%h)" $commit_range)
+          
+          # 如果没有提交记录，显示默认信息
+          if [ -z "$changelog" ]; then
+            changelog="No changes in this release."
+          fi
+          
+          # 输出Changelog到变量（供后续步骤使用）
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "$changelog" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
 
+      # 步骤2：安装打包工具（确保zip可用）
       - name: 安装打包工具
         run: sudo apt-get update && sudo apt-get install -y zip
 
+      # 步骤3：打包项目文件
       - name: 打包项目
         run: |
+          # 打包所有文件，排除.git和GitHub工作流文件
           zip -r release-package.zip . -x '*.git*' '*.github*' 'node_modules/*'
 
+      # 步骤4：创建GitHub Release
       - name: 创建Release
         uses: softprops/action-gh-release@v2
         with:
-          body: ${{ steps.changelog.outputs.changelog }}
+          # 使用生成的简易Changelog作为描述
+          body: |
+            ## Changelog
+            ${{ steps.generate_changelog.outputs.changelog }}
+          # 上传打包的文件
           files: release-package.zip
           draft: false
           prerelease: false

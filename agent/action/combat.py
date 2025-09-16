@@ -56,13 +56,13 @@ class ChooseMonster(CustomAction):
         argv: CustomAction.RunArg,
     ) -> bool:
         param = json.loads(argv.custom_action_param)
-        jina =param.get("怪兽种类")
-        if jina == "True":
+        jina = int(param.get("巨兽种类"))
+        if jina == 1:
             print("开始吉娜")
             context.run_task("自动集结_吉娜入口")
-        else:
-            print("开始冰原怪兽")
-            context.run_task("自动集结_怪兽入口")
+        if jina == 0:
+            print("开始冰原巨兽")
+            context.run_task("自动集结_巨兽入口")
         return True
 @AgentServer.custom_action("开始出征")
 class BeginCombat(CustomAction):
@@ -72,7 +72,7 @@ class BeginCombat(CustomAction):
         argv: CustomAction.RunArg,
     ) -> bool:
         param = json.loads(argv.custom_action_param)
-        print(param)        
+        print("出征参数：",param)        
         # TODO:智能化
         #if combat_times == 0:
         #    return True
@@ -105,11 +105,12 @@ class BeginCombat(CustomAction):
                     detail = context.run_recognition("自动集结_行军中",img)
                 context.run_task("后退")
                 time.sleep(return_time*2 + 2)
-                jina =param.get("怪兽种类")
+                jina =param.get("巨兽种类")
+                print("jina=",jina)
                 context.run_task("自动集结入口",{
                     "自动集结入口":{
                         "custom_action_param": {
-                        "怪兽种类": jina
+                        "巨兽种类": jina
                     }
                     }
                     

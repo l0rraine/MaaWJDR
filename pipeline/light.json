@@ -91,7 +91,7 @@
         "recognition": {
             "type": "OCR",
             "param": {
-                "expected": ["前往查看","查看"],
+                "expected": ["前往查看","查看","领取"],
                 "roi": [
                     213,
                     800,

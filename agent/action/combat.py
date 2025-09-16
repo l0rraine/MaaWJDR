@@ -48,7 +48,22 @@ class ChangeMonsterLevel(CustomAction):
     ) -> bool:
         return True
 
-
+@AgentServer.custom_action("自动集结_怪物分支")
+class ChooseMonster(CustomAction):
+    def run(
+        self,
+        context: Context,
+        argv: CustomAction.RunArg,
+    ) -> bool:
+        param = json.loads(argv.custom_action_param)
+        jina =param.get("怪兽种类")
+        if jina == "True":
+            print("开始吉娜")
+            context.run_task("自动集结_吉娜入口")
+        else:
+            print("开始冰原怪兽")
+            context.run_task("自动集结_怪兽入口")
+        return True
 @AgentServer.custom_action("开始出征")
 class BeginCombat(CustomAction):
     def run(
@@ -56,15 +71,15 @@ class BeginCombat(CustomAction):
         context: Context,
         argv: CustomAction.RunArg,
     ) -> bool:
-        json_data = json.loads(argv.custom_action_param)
-        print(json_data)        
+        param = json.loads(argv.custom_action_param)
+        print(param)        
         # TODO:智能化
         #if combat_times == 0:
         #    return True
         
         # 获取返回时间
         img = context.tasker.controller.post_screencap().wait().get()
-        detail = context.run_recognition("识别时间", img)
+        detail = context.run_recognition("识别集结时间", img)
         # print("time:",detail)
         hours, minutes, seconds = map(int, detail.best_result.text.split(':'))
         return_time = hours * 3600 + minutes * 60 + seconds
@@ -73,7 +88,7 @@ class BeginCombat(CustomAction):
         context.run_task("点击出征")
         time.sleep(0.5)
         img = context.tasker.controller.post_screencap().wait().get()    
-        detail = context.run_recognition("集结中", img)
+        detail = context.run_recognition("自动集结_集结中", img)
         # print(f'detail: {detail}')
         if detail is not None and detail.box:
                 # print(f'detail box: {detail.box}')
@@ -87,10 +102,18 @@ class BeginCombat(CustomAction):
                 while detail is None:
                     time.sleep(1)
                     img = context.tasker.controller.post_screencap().wait().get()
-                    detail = context.run_recognition("行军中",img)
+                    detail = context.run_recognition("自动集结_行军中",img)
                 context.run_task("后退")
                 time.sleep(return_time*2 + 2)
-                context.run_task("集结冰原巨兽起点")
+                jina =param.get("怪兽种类")
+                context.run_task("自动集结入口",{
+                    "自动集结入口":{
+                        "custom_action_param": {
+                        "怪兽种类": jina
+                    }
+                    }
+                    
+                })
                 return True
         return True
     
@@ -104,8 +127,8 @@ class LightBeginCombat(CustomAction):
         json_data = json.loads(argv.custom_action_param)
         print(json_data)        
         img = context.tasker.controller.post_screencap().wait().get()
-        detail = context.run_recognition("识别时间", img)
-        # print("time:",detail)
+        detail = context.run_recognition("识别集结时间", img)
+        print("time:",detail.best_result.text)
         hours, minutes, seconds = map(int, detail.best_result.text.split(':'))
         return_time = hours * 3600 + minutes * 60 + seconds
         

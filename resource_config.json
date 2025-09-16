@@ -25,7 +25,7 @@
     },
     {
       "task_name": "自动集结",
-      "task_entry": "集结冰原巨兽起点",
+      "task_entry": "自动集结入口",
       "option": [
         "队伍设置",
         "战斗设置",
@@ -73,7 +73,7 @@
       "default": "0",
       "doc": "集结队伍设置,0不做修改，其余为队伍编组序号",
       "pipeline_override": {
-        "选择队伍": {
+        "自动集结_选择队伍": {
           "custom_action_param": {
             "队伍序号": "{value}"
           }
@@ -86,7 +86,7 @@
       "default": "0",
       "doc": "集结战斗方式,-1清空体力，0为智能保留，其他为具体次数",
       "pipeline_override": {
-        "点击出征": {
+        "自动集结_准备出征": {
           "custom_action_param": {
             "出征次数": "{value}"
           }
@@ -99,7 +99,12 @@
       "default": false,
       "doc": "是否集结吉娜",
       "pipeline_override": {
-        "点击出征": {
+        "自动集结入口": {
+          "custom_action_param": {
+            "怪兽种类": "{value}"
+          }
+        },
+        "自动集结_准备出征": {
           "custom_action_param": {
             "怪兽种类": "{value}"
           }

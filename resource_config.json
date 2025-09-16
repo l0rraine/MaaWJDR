@@ -1,6 +1,6 @@
 {
   "resource_name": "无尽冬日",
-  "resource_version": "v0.0.1",
+  "resource_version": "v0.2.0",
   "resource_author": "一念心清净",
   "resource_update_service_id": "MaaWJDR",
   "resource_rep_url": "https://github.com/l0rraine/MaaWJDR",
@@ -30,6 +30,13 @@
         "队伍设置",
         "战斗设置",
         "吉娜"
+      ]
+    },
+    {
+      "task_name": "自动灯塔",
+      "task_entry": "灯塔入口",
+      "option": [
+        "灯塔出征队伍设置"
       ]
     }
   ],
@@ -95,6 +102,19 @@
         "点击出征": {
           "custom_action_param": {
             "怪兽种类": "{value}"
+          }
+        }
+      }
+    },
+    {
+      "name": "灯塔出征队伍设置",
+      "type": "input",
+      "default": 0,
+      "doc": "集结队伍设置,0不做修改，其余为队伍编组序号",
+      "pipeline_override": {
+        "灯塔选择队伍": {
+          "custom_action_param": {
+            "队伍序号": "{value}"
           }
         }
       }

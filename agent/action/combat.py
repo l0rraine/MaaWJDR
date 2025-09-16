@@ -93,3 +93,24 @@ class BeginCombat(CustomAction):
                 context.run_task("集结冰原巨兽起点")
                 return True
         return True
+    
+@AgentServer.custom_action("灯塔开始出征")
+class LightBeginCombat(CustomAction):
+    def run(
+        self,
+        context: Context,
+        argv: CustomAction.RunArg,
+    ) -> bool:
+        json_data = json.loads(argv.custom_action_param)
+        print(json_data)        
+        img = context.tasker.controller.post_screencap().wait().get()
+        detail = context.run_recognition("识别时间", img)
+        # print("time:",detail)
+        hours, minutes, seconds = map(int, detail.best_result.text.split(':'))
+        return_time = hours * 3600 + minutes * 60 + seconds
+        
+        # 开始出征
+        context.run_task("点击出征")
+        time.sleep(return_time*2 + 2)
+        context.run_task("灯塔入口")        
+        return True

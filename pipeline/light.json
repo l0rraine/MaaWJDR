@@ -88,6 +88,7 @@
         ]
     },
     "灯塔点击查看": {
+        "post_delay": 800,
         "recognition": {
             "type": "OCR",
             "param": {
@@ -122,7 +123,7 @@
             }
         },
         "action": "Click",
-        "post_delay": 5000,
+        "post_delay": 10000,
         "next": [
             "灯塔入口"
         ]
